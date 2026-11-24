@@ -328,7 +328,7 @@ app.patch('/api/incidencias/:id', async (req, res) => {
 });
 
 // Cualquier otra ruta devuelve el index.html del frontend
-app.get('*', (req, res) => {
+app.get('/{*splat}', (req, res) => {
   res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
