@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atlantic City</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="layout">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-name">Atlantic City</span>
+      </div>
+
+      <nav class="tabs" aria-label="Secciones">
+        <button class="tab-btn active" data-tab="clientes">Clientes</button>
+        <button class="tab-btn" data-tab="citas">Citas</button>
+        <button class="tab-btn" data-tab="membresias">Membresías</button>
+        <button class="tab-btn" data-tab="incidencias">Incidencias</button>
+      </nav>
+
+      <span id="dbStatus" class="status">Verificando...</span>
+    </header>
+
+    <main class="container">
+      <div class="section-header">
+        <h1 id="sectionTitle">Clientes</h1>
+      </div>
+
+      <!-- CLIENTES -->
+      <section id="panel-clientes" class="panel active">
+        <div class="grid">
+          <div class="card">
+            <h2 id="clienteFormTitle">Nuevo cliente</h2>
+            <form id="clienteForm" class="form">
+              <input type="hidden" id="clienteId" />
+              <div class="field">
+                <label for="tipoDocumento">Documento</label>
+                <select id="tipoDocumento" required>
+                  <option value="DNI">DNI</option>
+                  <option value="CE">CE</option>
+                  <option value="PASAPORTE">Pasaporte</option>
+                  <option value="RUC">RUC</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="numeroidentificacion">Número</label>
+                <input type="text" id="numeroidentificacion" placeholder="74859612" required />
+              </div>
+              <div class="field">
+                <label for="nombres">Nombres</label>
+                <input type="text" id="nombres" required />
+              </div>
+              <div class="field">
+                <label for="apellidos">Apellidos</label>
+                <input type="text" id="apellidos" required />
+              </div>
+              <div class="field">
+                <label for="telefono">Teléfono</label>
+                <input type="text" id="telefono" placeholder="999 888 777" />
+              </div>
+              <div class="field">
+                <label for="correoelectronico">Correo</label>
+                <input type="email" id="correoelectronico" placeholder="correo@ejemplo.com" />
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="clienteSubmitBtn">Guardar</button>
+                <button type="button" class="btn btn-secondary" id="clienteCancelBtn">Limpiar</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="card">
+            <div class="card-top">
+              <h2>Listado</h2>
+              <input type="search" id="buscarCliente" class="search-input" placeholder="Buscar cliente..." />
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Documento</th>
+                    <th>Nombre</th>
+                    <th>Contacto</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="clientesTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CITAS -->
+      <section id="panel-citas" class="panel">
+        <div class="grid">
+          <div class="card">
+            <h2>Nueva cita</h2>
+            <form id="citaForm" class="form">
+              <div class="field full">
+                <label for="citaClienteSelect">Cliente</label>
+                <select id="citaClienteSelect" required></select>
+              </div>
+              <div class="field">
+                <label for="fechaHoraCita">Fecha y hora</label>
+                <input type="datetime-local" id="fechaHoraCita" required />
+              </div>
+              <div class="field">
+                <label for="estadoCita">Estado</label>
+                <select id="estadoCita">
+                  <option value="Programada">Programada</option>
+                  <option value="En curso">En curso</option>
+                  <option value="Completada">Completada</option>
+                  <option value="Cancelada">Cancelada</option>
+                </select>
+              </div>
+              <div class="field full">
+                <label for="motivoVisita">Motivo</label>
+                <input type="text" id="motivoVisita" placeholder="Consulta de membresía" required />
+              </div>
+              <div class="field full">
+                <label for="observacionesCita">Observaciones</label>
+                <input type="text" id="observacionesCita" />
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Guardar cita</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="card">
+            <h2>Citas registradas</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Cliente</th>
+                    <th>Fecha</th>
+                    <th>Motivo</th>
+                    <th>Estado</th>
+                  </tr>
+                </thead>
+                <tbody id="citasTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MEMBRESÍAS -->
+      <section id="panel-membresias" class="panel">
+        <div class="grid">
+          <div class="card">
+            <h2>Nueva membresía</h2>
+            <form id="membresiaForm" class="form">
+              <div class="field full">
+                <label for="memClienteSelect">Cliente</label>
+                <select id="memClienteSelect" required></select>
+              </div>
+              <div class="field">
+                <label for="tipoTarjetaSelect">Tipo</label>
+                <select id="tipoTarjetaSelect" required></select>
+              </div>
+              <div class="field">
+                <label for="codTarjeta">Código</label>
+                <input type="text" id="codTarjeta" placeholder="AC-001" required />
+              </div>
+              <div class="field">
+                <label for="fechaEmision">Emisión</label>
+                <input type="date" id="fechaEmision" />
+              </div>
+              <div class="field">
+                <label for="fechaVencimiento">Vencimiento</label>
+                <input type="date" id="fechaVencimiento" />
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Emitir tarjeta</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="card">
+            <h2>Tarjetas</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Código</th>
+                    <th>Cliente</th>
+                    <th>Tipo</th>
+                    <th>Estado</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="membresiasTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- INCIDENCIAS -->
+      <section id="panel-incidencias" class="panel">
+        <div class="grid">
+          <div class="card">
+            <h2>Nueva incidencia</h2>
+            <form id="incidenciaForm" class="form">
+              <div class="field full">
+                <label for="incClienteSelect">Cliente</label>
+                <select id="incClienteSelect" required></select>
+              </div>
+              <div class="field">
+                <label for="categoriaIncidencia">Categoría</label>
+                <select id="categoriaIncidencia" required>
+                  <option value="Atención al Cliente">Atención al Cliente</option>
+                  <option value="Membresía / Tarjeta">Membresía / Tarjeta</option>
+                  <option value="Soporte TIC">Soporte TIC</option>
+                  <option value="Facturación / Caja">Facturación / Caja</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="prioridad">Prioridad</label>
+                <select id="prioridad" required>
+                  <option value="Baja">Baja</option>
+                  <option value="Media">Media</option>
+                  <option value="Alta">Alta</option>
+                  <option value="Crítica">Crítica</option>
+                </select>
+              </div>
+              <div class="field full">
+                <label for="descripcionIncidencia">Descripción</label>
+                <textarea id="descripcionIncidencia" rows="3" required></textarea>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Registrar</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="card">
+            <h2>Incidencias</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Cliente</th>
+                    <th>Categoría</th>
+                    <th>Prioridad</th>
+                    <th>Estado</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="incidenciasTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
