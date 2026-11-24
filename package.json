@@ -1,0 +1,8 @@
+{
+  "name": "atlantic-city-crm",
+  "private": true,
+  "scripts": {
+    "build": "npm install --prefix backend",
+    "start": "node backend/server.js"
+  }
+}
