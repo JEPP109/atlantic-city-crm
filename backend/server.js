@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const mysql = require('mysql2/promise');
 
 const app = express();
@@ -29,8 +30,15 @@ const pool = mysql.createPool({
   ...(useSSL ? { ssl: { rejectUnauthorized: false } } : {})
 });
 
-// Servir frontend estático
-const frontendPath = path.join(__dirname, '..', 'frontend');
+// Resolver carpeta frontend tanto con Root Directory en "backend" como en la raíz del repo
+const candidatePaths = [
+  path.join(__dirname, '..', 'frontend'),
+  path.join(__dirname, 'frontend')
+];
+const frontendPath =
+  candidatePaths.find((p) => fs.existsSync(path.join(p, 'index.html'))) ||
+  candidatePaths[0];
+
 app.use(express.static(frontendPath));
 
 // Healthcheck
@@ -327,9 +335,22 @@ app.patch('/api/incidencias/:id', async (req, res) => {
   }
 });
 
-// Cualquier otra ruta devuelve el index.html del frontend
+// Ruta raíz explícita para servir index.html
+app.get('/', (req, res) => {
+  const indexPath = path.join(frontendPath, 'index.html');
+  if (!fs.existsSync(indexPath)) {
+    return res.status(404).send(`No se encontró index.html en: ${indexPath}`);
+  }
+  res.sendFile(indexPath);
+});
+
+// Cualquier otra ruta devuelve el index.html del frontend (SPA fallback)
 app.get('/{*splat}', (req, res) => {
-  res.sendFile(path.join(frontendPath, 'index.html'));
+  const indexPath = path.join(frontendPath, 'index.html');
+  if (!fs.existsSync(indexPath)) {
+    return res.status(404).send(`No se encontró index.html en: ${indexPath}`);
+  }
+  res.sendFile(indexPath);
 });
 
 app.listen(PORT, '0.0.0.0', () => {
